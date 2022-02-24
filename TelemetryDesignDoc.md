@@ -7,7 +7,7 @@ This is a design document for a proposed refactoring of WPILib telemetry feature
 As WPILib has grown, its telemetry architecture has grown with it.  Heading into the 2022-2023 season, WPILib currently plans to support:
 
 * A communications protocol (NetworkTables)
-* Four dashboards (LabView dashboard, SmartDashboard, Shuffleboard, Glass)
+* Four dashboards (LabVIEW dashboard, SmartDashboard, Shuffleboard, Glass)
 * Two logging solutions (Shuffleboard recordings, on-RIO logging)
 * A declarative object-oriented telemetry API (Sendable)
 * A code-bypassing "debug mode" for sensors and actuators (LiveWindow)
@@ -22,11 +22,11 @@ The current API presents new users with a number of pain points.  Firstly, users
 
 In particular:
 
-* The LabView dashboard and SmartDashboard are largely legacy features that have been totally supplanted in functionality by Shuffleboard and Glass.  Neither is likely to be easily maintainable in the event of a major breakage.  Both options are substantially clunkier and less-functional than the alternatives, and teams which choose these dashboards are probably worse-off for the choice.  Is continued support for legacy team-side dashboard code really worth this cost, especially given the tendency of FRC teams to rewrite most of their code anually?
+* The LabVIEW dashboard and SmartDashboard are largely legacy features that have been totally supplanted in functionality by Shuffleboard and Glass.  Neither is likely to be easily maintainable in the event of a major breakage.  Both options are substantially clunkier and less-functional than the alternatives, and teams which choose these dashboards are probably worse-off for the choice.  Is continued support for legacy team-side dashboard code really worth this cost, especially given the tendency of FRC teams to rewrite most of their code anually?
 * ShuffleBoard is clearly superior to Glass as an operating dashboard, and has many features (robot-code-driven tabs and layouts, data recording and playback) that make it appealing as the "default" robot dashboard.  However, it is already in danger of slipping into the "legacy code" state of the above two tools due to the migration of developer effort to Glass.  This could eventually cost teams if support for the dashboard becomes difficult to sustain while no other dashboard option offers a similar featureset.
 * Glass is a *fantastic* tool for real-time plotting and signal analysis, but currently lacks a robust featureset to be usable as a dashboard.
 
-Under the current ecosystem, effective users will likely want to make use of both Shuffleboard and Glass, while ignoring the LabView dashboard and SmartDashboard.  However, the documentation and API shapes do not necessarily lead users to this conclusion.  Moreover, developer effort is difficult to split between two tools, but the current distribution of features between tools demands it.
+Under the current ecosystem, effective users will likely want to make use of both Shuffleboard and Glass, while ignoring the LabVIEW dashboard and SmartDashboard.  However, the documentation and API shapes do not necessarily lead users to this conclusion.  Moreover, developer effort is difficult to split between two tools, but the current distribution of features between tools demands it.
 
 ### Overloading of the Sendable implementation
 
@@ -61,4 +61,4 @@ The implementation of the code-driven layout configuration in Shuffleboard invol
 
 ### Obscure calls for simple functions
 
-The simplest way to log telemetry to the dashboard declaratively is through a `SmartDashboard` method, despite `SmartDashboard` being a nearly-obsolete legacy framework with no active maintenance.  As Glass does not have its own API, ahe `Shuffleboard` API is rather verbose, `SmartDashboard` calls are often used even in codebases that never actually open `SmartDashboard`.  This is not ideal.
+The simplest way to log telemetry to the dashboard declaratively is through a `SmartDashboard` method, despite `SmartDashboard` being a nearly-obsolete legacy framework with no active maintenance.  As Glass does not have its own API, the `Shuffleboard` API is rather verbose, `SmartDashboard` calls are often used even in codebases that never actually open `SmartDashboard`.  This is not ideal.
